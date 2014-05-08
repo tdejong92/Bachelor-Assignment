@@ -5,11 +5,17 @@ import Data.List
 import Language
 import Initialization
 import Debug.Trace
+import Data.Maybe
 
 -- TODO: check implementation of addBelief
+-- TODO: remove location from OnLocation
+-- TODO: add devices to system
+
+msgs = [[],[],[]]
 
 --run :: (HomeAutomationSystem -> [[Message]] -> (HomeAutomationSystem, [[Message]])) -> HomeAutomationSystem -> [[Message]] -> [[[Message]]]
-run world has input = (map idNr $ agents has) : run world has' input'
+run world has input | any (==False) $ map null input  	= (map idNr $ agents has) : run world has' input'
+					| otherwise							= run world has' input' 
 	where
 	 (has',output)	= world has input
 	 input'			= order output
@@ -25,10 +31,12 @@ world has input = (has',output)
 -- auxiliary function that updates each agent's counter every time the world-function is executed	 
 updateCounter :: [[Message]] -> [[Message]]
 updateCounter []				= []
-updateCounter (mList:msList)	= (mList':updateCounter msList)
+updateCounter (mList:msList)	| null mList == False	= (mList':updateCounter msList)
+								| otherwise				= 
 	where
-	 ((Message prop agent):ms)	= mList
-	 mList'						= ((Message NewRound agent):mList)
+	 (m:ms)				= mList
+	 Message prop agent	= m
+	 mList'				= ((Message NewRound agent):mList)
 	 
 -- updating a specific agent with its incoming messages	by determining its plan and performing the corresponding actions
 agentUpdate :: [Message] -> (Agent,[Message])
@@ -37,22 +45,20 @@ agentUpdate [m]			= (agent'',output)
 	 Message prop agent	= m
 	 beliefs'			= addBelief (beliefs agent) prop
 	 agent'				= agent{beliefs=beliefs'}
-	 actions			= plans agent'
-	 (agent'',output)	= performActions agent' actions
+	 (agent'',output)	= performActions agent' $ getActions agent'
 agentUpdate (m:msgs) 	= (agent'',output++output')
 	where
 	 Message prop agent	= m
 	 beliefs'			= addBelief (beliefs agent) prop
 	 agent'				= agent{beliefs=beliefs'}
-	 actions			= plans agent'
-	 (agentTemp,output)	= performActions agent' actions
+	 (agentTemp,output)	= performActions agent' $ getActions agent'
 	 Message p a		= head msgs
 	 (agent'',output') 	= agentUpdate ((Message p agentTemp):tail msgs)		-- updates the agent in the next message
 
 --	 
 performActions :: Agent -> [Action] -> (Agent,[Message])
 performActions agent []									= (agent,[])
-performActions agent [UpdateCounter]					= performActions agent' $ plans agent'
+performActions agent [UpdateCounter]					= performActions agent' $ getActions agent'
 	where
 	 ((Counter x):beliefs')								= beliefs agent
 	 beliefs''											= [ x | x <- ((Counter (x+1)):beliefs'), x /= NewRound ]
@@ -61,16 +67,57 @@ performActions agent [TurnOn d]							= (agent',[])
 	where
 	 beliefs' 											= addBelief (removeLocationBeliefs $ beliefs agent) (On d)
 	 agent' 											= agent{beliefs=beliefs'}
-performActions agent [Send (Message prop recAgent)]		= (agent,[Message prop recAgent])
-performActions agent [DetermineRange agent1 location]	| inRange agent agent1 	= performActions agent' $ plans agent'
-														| otherwise	= (agent,[])
+performActions agent [Send recAgent]					= (agent',[Message prop recAgent])
 	where
-	 beliefs' 											= addBelief (beliefs agent) (InRange agent1)
-	 agent' 											= agent{beliefs=beliefs'}
+	 (prop,agent')	= retrieve (OnLocationCond) agent
+performActions agent [DetermineRange]					| inRange agent a 	= (agent'',[])		-- Reevaluate plans
+														| otherwise			= (agent,[])
+	where
+	 ((OnLocation a l),agent')							= retrieve OnLocationCond agent
+	 beliefs' 											= addBelief (beliefs agent') (InRange a)
+	 agent''											= agent'{beliefs=beliefs'}
 performActions agent (act:acts)							= (agent'',output')
 	where
 	 (agent',output)									= performActions agent [act]
 	 (agent'',output')									= performActions agent' acts
+	 
+getActions :: Agent -> [Action]
+getActions agent = getActionsAux (plans agent) (beliefs agent)
+	 
+getActionsAux :: [Plan] -> [Proposition] -> [Action]
+getActionsAux [] _				= []
+getActionsAux (p:ps) beliefs	| implies beliefs conditions	= actions ++ (getActionsAux ps beliefs)
+								| otherwise						= getActionsAux ps beliefs
+	where
+	 Plan conditions actions	= p 
+
+implies :: [Proposition] -> [Condition] -> Bool
+implies beliefs cs	= all isJust $ map (retrieveAux beliefs) cs
+	 
+-- retrieves the proposition that has caused a condition of the agent to evaluate as true, or Nothing.
+	-- if isJust: condition evaluates to true
+retrieve :: Condition -> Agent -> (Proposition,Agent)
+retrieve condition agent	= (prop,agent{beliefs=beliefs'})
+	where
+	 Just (prop, beliefs')	= retrieveAux (beliefs agent) condition
+	 
+retrieveAux :: [Proposition] -> Condition -> Maybe (Proposition,[Proposition])
+retrieveAux [b] OnLocationCond		= case b of
+										(OnLocation x y)	-> Just (b,[])
+										otherwise			-> Nothing
+retrieveAux (b:bs) OnLocationCond	= case b of
+										(OnLocation x y) 	-> Just (b,bs)
+										otherwise			-> Just (bRes,(b:bsRes))
+	where
+	 Just (bRes,bsRes)	= retrieveAux bs OnLocationCond
+retrieveAux [b] InRangeCond			= case b of
+										(InRange x)		-> Just (b,[])
+										otherwise		-> Nothing
+retrieveAux (b:bs) InRangeCond 		= case b of
+										(InRange x)		-> Just (b,bs)
+										otherwise		-> Just (bRes,(b:bsRes))
+	where
+	 Just (bRes,bsRes)	= retrieveAux bs InRangeCond
 
 addBelief	:: [Proposition] -> Proposition -> [Proposition]
 addBelief [] newProp		= [newProp]

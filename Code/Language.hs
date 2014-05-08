@@ -20,21 +20,23 @@ data Proposition	=	OnLocation Agent Location
 					|	Not Proposition		
 	deriving (Eq,Show,Read)
 	
--- data Condition		= CounterWithin [Int]	
-					-- | OnLocation
-					-- | InRange
-					-- | Proposition
+data Condition		= OnLocationCond
+					| InRangeCond
+					| CounterCond [Int]
+					| OnCond Device
+					| NewRoundCond
+	deriving (Eq,Show,Read)
 	
 data Device	= Lamp | Heater | Radio
 	deriving (Eq,Show,Read)
 	
 data Action	= TurnOn Device
-			| Send Message
-			| DetermineRange Agent	Location
+			| Send Agent
+			| DetermineRange
 			| UpdateCounter
 	deriving (Eq,Show,Read)
 	
-data Plan	= Plan Bool [Action]	
+data Plan	= Plan [Condition] [Action]	
 	deriving (Eq,Show,Read)
 				
 data Message	= Message Proposition Agent
@@ -42,8 +44,9 @@ data Message	= Message Proposition Agent
 				
 data Agent = Agent { 
 	idNr		:: String,
-	plans		:: [Action],
-	beliefs		:: [Proposition]
+	plans		:: [Plan],
+	beliefs		:: [Proposition],
+	location	:: Location
 	--range		:: Int
 	--transport	:: Transport
 	}	
