@@ -1,0 +1,23 @@
+Opstelling:
+1 agent per bewoner die periodiek de locatie doorgeeft aan de agents in de omgeving van het huis
+meerdere agents in de omgeving van het huis, die de locatieupdates van de bewoners ontvangen en indien deze dichtbij genoeg is, een bericht naar het huis sturen
+1 agent die het systeem in huis beheert
+1 agent per apparaat
+
+elke keer als een bewoner de locatie doorgeeft:
+- bepaal de dichtstbijzijnde sensoragent
+- sensoragent bepaalt of de persoon binnen de range van die agent valt aan de hand van de afstand en het vervoersmiddel van de persoon
+- zo ja, verstuur bericht naar huisagent
+
+Dus:
+- elke sensoragent heeft een int range in km
+- elke persoonsagent heeft een vervoersmiddel
+
+1. de lijst berichten wordt verstuurd
+2. de counter wordt geupdate in de beliefs van elke agent
+3. elke agent bepaalt of er acties uitgevoerd moeten worden n.a.v. de stand van de counter
+
+1. elke agent heeft in zijn beliefs altijd een proposition met de stand van de counter
+2. deze wordt elke world-ronde opgeteld
+3. in de plans van de betreffende agents, is er een conditie voor een bepaalde waarde van de counter
+4. als deze waarde bereikt is, is er een actie die de counter reset en passes

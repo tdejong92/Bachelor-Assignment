@@ -1,0 +1,48 @@
+\begin{thebibliography}{1}
+
+\bibitem{abi}
+{ABI Research}.
+\newblock Home automation, security, and monitoring.
+\newblock 2012.
+
+\bibitem{sha}
+A.~S. al~sumaiti, M.~H. Ahmed, and M.~M.~A. Salama.
+\newblock Smart home activities: A literature review.
+\newblock 2014.
+
+\bibitem{berginsight}
+{Berg Insight}.
+\newblock Smart homes and home automation.
+\newblock {\em M2M Research Series}, 2013.
+
+\bibitem{b:ippr}
+M.~E. Bratman.
+\newblock {\em Intention, Plans, and Practical Reason}.
+\newblock Harvard University Press: Cambridge, MA, 1987.
+
+\bibitem{mast}
+G.~Morganti, A.~Perdon, G.~Conte, and D.~Scaradozzi.
+\newblock Multi-agent system theory for modelling a home automation system.
+\newblock 2009.
+
+\bibitem{dif}
+A.~Solimando and R.~Traverso.
+\newblock Designing and implementing a framework forbdi-style communicating
+  agents in haskell.
+\newblock 2012.
+
+\bibitem{ssh}
+N.~K. D. . S.~W. Stichting Smart~Homes.
+\newblock The integration of technology and services in the home environment.
+
+\bibitem{b:rara}
+M.~Wooldridge.
+\newblock {\em Reasoning about Rational Agents}.
+\newblock The MIT Press: Cambridge, MA, 2000.
+
+\bibitem{b:mas}
+M.~Wooldridge.
+\newblock {\em An Introduction to MultiAgent Systems}.
+\newblock John Wiley and Sons, Ltd, 2002.
+
+\end{thebibliography}

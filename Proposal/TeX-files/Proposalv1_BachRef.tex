@@ -1,0 +1,168 @@
+\documentclass{sig-alternate-br}
+
+\begin{document}
+\conferenceinfo{13$^{th}$ Twente Student Conference on IT}{June 21$^{st}$, 2010, Enschede, The Netherlands.}
+\CopyrightYear{2010} % Allows default copyright year (200X) to be over-ridden - IF NEED BE.
+
+\title{A Multi-Agent System in Haskell}
+
+\numberofauthors{3}
+\author{
+\alignauthor
+Tanja de Jong\\
+       \affaddr{University of Twente}\\
+       \affaddr{P.O. Box 217, 7500AE Enschede}\\
+       \affaddr{The Netherlands}\\
+       \email{t.dejong-4@student.utwente.nl}
+}
+
+\maketitle
+\begin{abstract}
+% Waarom een multiagent system? onderwerp/motivatie
+% methode
+This proposal investigates a multi-agent home automation system in Haskell. As the name implies, a multi-agent system is a system that exists of multiple agents, that can individually solve problems through reasoning and communicate with each other in order to solve a bigger problem together. A home automation system integrates electrical devices in a house with each other in order to gain a higher quality of living for the residents. Because automation systems consist of multiple appliances and devices that are connected through a network and communicate with each other, a multi-agent system seems a good approach for the implementation of a home automation system. This system will be implemented in the programming language Haskell, which is a functional language. Functional languages are programming languages with a mathematical nature, which relates closely to the logical reasoning that is used by the agents of a multi-agent system.
+
+% Because automation systems consist of multiple appliances and devices that are connected through a network and communicate with each other, these types of systems are very complex to control \cite{mast}. For this reason, a multi-agent system seems to be a good approach to implementing a home automation system, which is the case that will be implemented for this research. This home automation system should automatically determine when residents return home, in order to prepare the devices in the house without explicit human input. With a system like this in place, residents do not have to adjust their homes to their wishes after their return home, but can go ahead with their daily business.
+
+This research will hopefully result in an answer to the question of how suitable functional languages are for the implementation of multi-agent systems.
+
+%This proposal describes a home automation system that automatically determines when residents return home, in order to prepare the devices in the house without explicit human input. With a system like this in place, residents do not have to adjust their homes to their wishes after their return home, but can go ahead and do whatever they want to do instead.
+%Home automation is a popular subject nowadays, because of numerous advantages of automation that can add convenience and safety to people's lives. Therefore, a new generation of such systems with even more automation is called for.
+%To implement this new generation, a language embedded into Haskell to control a home automation system with a multi-agent approach, will be described in this proposal.
+%This will hopefully result in the implementation of a system that will form the basis of a new generation of home automation, in which human input is limited even more than it is already in existing home automation systems.
+\end{abstract}
+
+% A category with the (minimum) three required fields (NOT USED in Bachelor Referaat)
+% \category{H.4}{Information Systems Applications}{Miscellaneous}
+%A category including the fourth, optional field follows...
+% \category{D.2.8}{Software Engineering}{Metrics}[complexity
+% measures, performance measures]
+
+\keywords{Multi-Agent System, Agent, Logic, Functional Language, Haskell, Home Automation System}
+
+\section{Introduction}
+\subsection{Multi-Agent System}
+A multi-agent system exists of multiple intelligent agents that can individually solve problems through reasoning and communicate with each other in order to solve a bigger problem together. Multi-agent systems can be used for solving problems that can not -or not as easily- be solved by a single agent or a monolithic system. These types of systems can have several advantages, for example:
+\begin{itemize}
+\item robustness;
+\item scalability;
+\item adaptability.
+\end{itemize}
+Because home automation systems consist of multiple appliances and devices that are connected through a network and communicate with each other, these types of systems are very complex to control \cite{mast}. For this reason, a multi-agent system seems to be a good approach to implementing a home automation system, which is the case that will be used for this research.
+
+\subsection{Haskell}
+%WIJZIGINGEN DOORVOEREN
+Functional languages are of a mathematical nature, and this might have advantages for implementing multi-agent systems \cite{dif}. Therefore, it seems to make sense to implement a home automation multi-agent system in a functional language. Because Haskell is an advanced and widely used functional language, the system to be implemented for this research will be implemented in Haskell.
+
+\subsection{Home Automation}
+Home automation is a popular subject nowadays, because of numerous advantages of automation that can add convenience and safety to people's lives. Therefore, a new generation of such systems with even more automation is called for.
+
+Home automation is "a way of integrating technology and services in order to gain a higher quality of living", according to Stichting Smart Homes, Nationaal Kenniscentrum Domotica \& Slim Wonen \cite{ssh}. This is currently a very popular area of research as the number of new home installations are expected to increase enormously, according to Telecom research firm Berg Insight \cite{berginsight} and market research and intelligence firm ABI Research \cite{abi}. Nowadays, home automation systems can range from simple remote controls to complex networks with many different component that can each have their own form of intelligence and automation. The most intelligent systems that are currently in general use need user input through a pc, smartphone or tablet to start their automation processes. Automatation results in numerous advantages for people, for example:
+\begin{itemize}
+\item added convenience/fun/peace of mind: people have to perform less boring tasks themselves
+\item timesaving: automation does work that people would have to do otherwise
+\item saving money and better for environment: devices can be turned off automatically when nobody's home
+\item increased home safety: lights can be turned on automatically when somebody arrives home
+\end{itemize}
+\subsection{Problem Statement}
+Multi-agent systems can be widely used for various applications, among which home automation, and can have many advantages in comparison to single-agent or monolithic systems. % FIND REFERENCE FOR ADVANTAGES
+
+% EXPLAIN LOGIC BETTER
+Because logic can be used very well to reason about these multi-agent systems \cite{b:rara1112} and the mathematical nature of functional languages, it seems that a functional language would be a good choice for the implementation of a multi-agent system. Proposed here is to investigate how suitable a functional language is for the implementation of a multi-agent automation system, specifically, a home automation system in Haskell.
+
+%Because of all the advantages of automation, the implementation of systems with even more automation and less dependency on human input than the systems that are currently widely used is in order. A language for such systems could be embedded into a functional language, which would be appropriate, because of the mathematical nature of functional languages. Proposed here is to research whether it is possible to implement a language that can control a home automation system in the functional language Haskell with a multi-agent approach, and if so, to research what is the performance of this implementation compared to possibly existing solutions in other languages.
+
+\section{Research Questions}
+How suitable is Haskell for the implementation of a multi-agent automation system?
+\begin{itemize}
+\item What multi-agent automation systems exist in non-functional languages?
+\item How well does the mathematical nature of functional languages COMPLY with the logical reasoning of multi-agent systems
+\end{itemize}
+
+%Is it possible to implement a domain-specific embedded language for a home automation multi-agent based system into Haskell?
+%\\If this is possible, what is the performance of the implementation compared to possibly existing solutions in other languages?
+%\begin{itemize}
+%\item What solutions in other languages exist?
+%\item How is the performance of a solution determined?
+%\item How can the performances of different solutions be compared?
+%\end{itemize}
+
+\section{Background}
+\subsection{Multi-agent systems}
+% explain what multi-agent systems are
+"Multi-agent systems are systems composed of multiple interacting computing elements, known as {\it agents}.
+\subsubsection{Rational Agents}
+% explain what rational agents are
+% explain how rational agents reason
+According to Wooldridge "an {\it agent} is a computer system that is {\it situated} in some {\it environment}, and that is capable of {\it autonomous} action in this environment in order to meet its design objectives." \cite{b:mas}. Thus, it is an entity that acts upon the environment it inhabits. An agent is said to be rational if it chooses to perform actions that are in its own best interests, given the beliefs it has about the world. Therefore, rational agents are expected to have the following properties, according to Wooldridge and Jennings \cite{b:rara}:
+\begin{itemize}
+\item autonomy;
+\item proactiveness;
+\item reactivity; and
+\item social ability.
+\end{itemize}
+\subsubsection{The Belief-Desire-Intention Model} p.7
+"The Belief-Desire-Intention (BDI) model gets its name from the fact that it recognizes the primacy of beliefs, desires, and intentions in rational action. Intuitively, an agent's beliefs correspond to information the agent has about the world. These beliefs may be incomplete or incorrect. An agents desires represent states of affairs that the agent would, in an ideal world, wish to be brought about. An agent's intentions represent desires that is thas committed to achieving". This model was originally developed by Michael Bratman \cite{b:ippr} and contains three components:
+\begin{itemize}
+\item a philosophical component;
+\item a software architecture component; and
+\item a logical component.
+\end{itemize}
+\subsubsection{Logic/reasoning}
+Why logic?
+- fixing on a structured, well-defined artificial language  akes it possbile to investigate the question of what can be expressed in a rigorous, mathematical way
+- any ambiguity can be removed
+- by adopting a logic-based approach, one makes available all the results and techniques of what is arguably the oldest, richest, most fundamental, and best-established branch of mathematics
+Mathematical logic is one of the most important tools available in computer science and AI today. Logic has played a role in three aspects of software engineering, as:
+\begin{itemize}
+\item a {\it specification language} \\ One of the main desirable features of a software specification language is that it should not dictate {\it how} a specification should be satisfied by an implementation. A logical specification language has exactly these properties. It does not dictate how an agent {\it a} should go about an intention, it is simply expected that {\it a} behaves as a rational agent given such an intention.
+\item a {\it programming language} \\
+\item a {\it verification language}
+\end{itemize}
+
+% explain the BDI model
+\subsection{Haskell}
+% explain what a functional language is
+% explain why functional languages are mathematical
+% explain what the benefits of a functional language might be
+
+\section{Research Method}
+In order to answer the research questions, first of all, research will have to be done to find out whether comparable solutions in other languages exist and what the advantages and disadvantages of these languages are. In this case, comparable solutions denote implementations of various multi-agent automation systems that do not necessarily have the exact same functionality as the language that will be implemented. After this, the domain-specific embedded language can be implemented in Haskell. A method is needed on how to determine the performance of the implemented language and the other languages that it will be compared to and on how these performances can be compared. In order to determine the performance, the language will need to be simulated and tested. Then, the performance of the implemented language compared to already existing languages can be determined. In short, the research method consists of three parts:
+\begin{itemize}
+\item Performing research into existing comparable implementations in other languages
+\item Implementing a domain-specific embedded language in Haskell that can control a home automation system with a multi-agent approach
+\item Defining a method to determine and compare performances of these languages
+\item Determine the performance of the newly implemented language using simulation and testing
+\item Compare the newly implemented language to the existing implementations in other languages with the defined method
+\end{itemize}
+\balancecolumns 
+\section{Related Work}
+% Home Automation - automation, energy efficiency
+There is an extensive amount of research on home automation. However, most of this research does not focus directly on the topic of this proposal.  The degree of automation most common in research needs user input in the form of using a smartphone, computer, or tablet to control the home automation system instead of having the intelligence to automate this. Besides this, there is a lot of focus on energy efficiency, for example by turning of devices when nobody is home \cite{sha}. Although this could ofcourse be accomplished by a higher degree of automation, the focus of the research mentioned in this proposal is on turning on devices when habitants return home, not on turning them off when they leave the house. \cite{ssm}
+% Multi-agent systems
+\section{Research Schedule}
+\begin{table}[h]
+\begin{tabular}{ll}
+Date & Description \\ \hline
+13-04-2014 & Research on other implementations completed \\
+04-05-2014 & Language implemented \\
+11-05-2014 & Method for comparison defined \\
+18-05-2014 & Performance of implemented language determined \\
+25-05-2014 & Comparison of languages completed \\
+31-05-2014 & Draft paper finished \\
+13-06-2014 & Paper finished \\
+\hline\end{tabular}
+\end{table}
+
+\bibliographystyle{abbrv}
+\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+\vspace{50 mm}
+\newpage
+\end{document}

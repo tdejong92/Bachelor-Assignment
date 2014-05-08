@@ -1,0 +1,34 @@
+\begin{thebibliography}{1}
+
+\bibitem{abi}
+{ABI Research}.
+\newblock Home automation, security, and monitoring.
+\newblock 2012.
+
+\bibitem{sha}
+A.~S. al~sumaiti, M.~H. Ahmed, and M.~M.~A. Salama.
+\newblock Smart home activities: A literature review.
+\newblock 2014.
+
+\bibitem{berginsight}
+{Berg Insight}.
+\newblock Smart homes and home automation.
+\newblock {\em M2M Research Series}, 2013.
+
+\bibitem{harper}
+R.~Harper.
+\newblock {\em Inside the Smart Home}.
+\newblock Springer, 2003.
+
+\bibitem{mast}
+G.~Morganti, A.~Perdon, G.~Conte, and D.~Scaradozzi.
+\newblock Multi-agent system theory for modelling a home automation system.
+\newblock 2009.
+
+\bibitem{dif}
+A.~Solimando and R.~Traverso.
+\newblock Designing and implementing a framework forbdi-style communicating
+  agents in haskell.
+\newblock 2012.
+
+\end{thebibliography}

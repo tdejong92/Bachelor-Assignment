@@ -1,0 +1,100 @@
+\documentclass{sig-alternate-br}
+
+\begin{document}
+\conferenceinfo{13$^{th}$ Twente Student Conference on IT}{June 21$^{st}$, 2010, Enschede, The Netherlands.}
+\CopyrightYear{2010} % Allows default copyright year (200X) to be over-ridden - IF NEED BE.
+
+\title{A Language for a Multi-Agent Home Automation System  Embedded in Haskell}
+
+\numberofauthors{3}
+\author{
+\alignauthor
+Tanja de Jong\\
+       \affaddr{University of Twente}\\
+       \affaddr{P.O. Box 217, 7500AE Enschede}\\
+       \affaddr{The Netherlands}\\
+       \email{t.dejong-4@student.utwente.nl}
+}
+
+\maketitle
+\begin{abstract}
+This proposal describes a home automation system that automatically determines when residents return home, in order to prepare the devices in the house without explicit human input. With a system like this in place, residents do not have to adjust their homes to their wishes after their return home, but can go ahead and do whatever they want to do instead.
+Home automation is a popular subject nowadays, because of numerous advantages of automation that can add convenience and safety to people's lives. Therefore, a new generation of such systems with even more automation is called for.
+To implement this new generation, a language embedded into Haskell to control a home automation system with a multi-agent approach, will be described in this proposal.
+This will hopefully result in the implementation of a system that will form the basis of a new generation of home automation, in which human input is limited even more than it is already in existing home automation systems.
+\end{abstract}
+
+% A category with the (minimum) three required fields (NOT USED in Bachelor Referaat)
+% \category{H.4}{Information Systems Applications}{Miscellaneous}
+%A category including the fourth, optional field follows...
+% \category{D.2.8}{Software Engineering}{Metrics}[complexity
+% measures, performance measures]
+
+\keywords{Home Automation System, Multi-Agent System, Agent, Functional Language, Haskell}
+
+\section{Introduction}
+\subsection{Home Automation}
+Home automation is "a way of integrating technology and services in order to gain a higher quality of living", according to Stichting Smart Homes, Nationaal Kenniscentrum Domotica \& Slim Wonen. This is currently a very popular area of research as the number of new home installations are expected to increase enormously, according to Telecom research firm Berg Insight \cite{berginsight} and market research and intelligence firm ABI Research \cite{abi}. The first generation of home automation started as early as the year 1915, after the use of domestic servants declined. However, home automation was not very popular until the widespread use of electricity \cite{harper}. These days, home automation systems can range from simple remote controls to complex networks with many different component that can each have their own form of intelligence and automation. The most intelligent systems that are currently in general use need user input through a pc, smartphone or tablet to start their automation processes. Automatization results in numerous advantages for people, for example:
+\begin{itemize}
+\item added convenience/fun/peace of mind: people have to perform less boring tasks themselves
+\item timesaving: automation does work that people would have to do otherwise
+\item moneysaving on utilities: devices can be turned off automatically when nobody's home
+\item better for environment: devices can be turned off automatically when nobody's home
+\item increased home safety: lights can be turned on automatically when somebody arrives home
+\end{itemize}
+\subsection{Multi-Agent System}
+A multi-agent system is a system that exists of multiple intelligent agents that can individually solve problems. These types of systems can be used for solving problems that can not or not as easily be solved by a single agent or a monolithic system. Because home automation systems consist of multiple appliances and devices that are connected through a network and communicate with each other, these types of systems are very complex to control \cite{mast}. For this reason, a multi-agent system would be a good approach to implementing a home automation system.
+\subsection{Haskell}
+Functional languages are of a mathematical nature which have advantages for implementing multi-agent systems \cite{dif}. Therefore, it seems to make sense to implement a home automation multi-agent system in a functional language. Because Haskell is an advanced and widely used functional language, the language for the system will be implemented in Haskell.
+\subsection{Problem Statement}
+Because of all the advantages of automation, the implementation of systems with even more automization and less dependency on human input than the systems that are currently widely used is in order. A language for such systems could be embedded into a functional language, which would be appropriate, because of the mathematical nature of functional languages. Proposed here is to research whether it is possible to implement a language that can control a home automation system in the functional language Haskell with a multi-agent approach, and if so, to research what is the performance of this implementation compared to possibly existing solutions in other languages.
+
+\section{Research Questions}
+Is it possible to implement a domain-specific embedded language for a home automation multi-agent based system into Haskell?
+\\If this is possible, what is the performance of the implementation compared to possibly existing solutions in other languages?
+\begin{itemize}
+\item What solutions in other languages exist?
+\item How is the performance of a solution determined?
+\item How can the performances of different solutions be compared?
+\end{itemize}
+
+\section{Research Method}
+In order to answer the research questions, first of all, research will have to be done to find out whether comparable solutions in other languages exist and what the advantages and disadvantages of these languages are. In this case, comparable solutions denote implementations of various multi-agent automation systems that do not necessarily have the exact same functionality as the language that will be implemented. After this, the domain-specific embedded language can be implemented in Haskell. A method is needed on how to determine the performance of the implemented language and the other languages that it will be compared to and on how these performances can be compared. In order to determine the performance, the language will need to be simulated and tested. Then, the performance of the implemented language compared to already existing languages can be determined. In short, the research method consists of three parts:
+\begin{itemize}
+\item Performing research into existing comparable implementations in other languages
+\item Implementing a domain-specific embedded language in Haskell that can control a home automation system with a multi-agent approach
+\item Defining a method to determine and compare performances of these languages
+\item Determine the performance of the newly implemented language using simulation and testing
+\item Compare the newly implemented language to the existing implementations in other languages with the defined method
+\end{itemize}
+\balancecolumns 
+\section{Related Work}
+% Home Automation - automation, energy efficiency
+There is an extensive amount of research on home automation. However, most of this research does not focus directly on the topic of this proposal.  The degree of automation most common in research needs user input in the form of using a smartphone, computer, or tablet to control the home automation system instead of the intelligence to automate this. Besides this, there is a lot of focus on energy efficiency, for example by turning of devices when nobody is home \cite{sha}. Although this could ofcourse be accomplished by a higher degree of automation, the focus of the research mentioned in this proposal is on turning on devices when habitants return home, not on turning them off when they leave the house. \cite{ssm}
+% Multi-agent systems
+\section{Research Schedule}
+\begin{table}[h]
+\begin{tabular}{ll}
+Date & Description \\ \hline
+13-04-2014 & Research on other implementations completed \\
+04-05-2014 & Language implemented \\
+11-05-2014 & Method for comparison defined \\
+18-05-2014 & Performance of implemented language determined \\
+25-05-2014 & Comparison of languages completed \\
+31-05-2014 & Draft paper finished \\
+13-06-2014 & Paper finished \\
+\hline\end{tabular}
+\end{table}
+
+\bibliographystyle{abbrv}
+\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+\vspace{50 mm}
+\newpage
+\end{document}
