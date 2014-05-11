@@ -10,7 +10,8 @@ import Debug.Trace
 
 -- System
 has0 = System { 
-	agents 	= [ha1, ha2, sa1, agent1,agent2]
+	agents 	= [ha1, ha2, sa1, agent1,agent2],
+	devices	= [(Lamp,False),(Heater,False),(Radio,False)]
 }
 
 -- Agents

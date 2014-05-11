@@ -27,7 +27,7 @@ run world has input | any (==False) $ map null input 	= trace ("ROUND") input' :
 					| otherwise							= run world has' input' 
 	where
 	 (has',output)	= world has input
-	 input'			= order output
+	 input'			= order has output
 	 a				= head $ agents has
 
 	 
@@ -39,7 +39,7 @@ world :: HomeAutomationSystem -> [[Message]] -> (HomeAutomationSystem, [[Message
 world has input = (has',output) -- trace ("WORLD: " ++ show output ++ " ENDWORLD")
 	where
 	 --(agents',output)
-	 (agents',output) = unzip $ map agentUpdate $ zip (updateCounter (agents has)) input	-- combines the result of updating every agent with the new messages
+	 (agents',output) = unzip $ map (agentUpdate has) $ zip (updateCounter (agents has)) input	-- combines the result of updating every agent with the new messages
 	 has'				= has{agents=agents'}												-- updates the system
 	 
 	 
@@ -61,53 +61,53 @@ updateCounter (a:agents)	= (a{beliefs=beliefs'}:updateCounter agents)
 	 beliefs'				= ((Counter (x+1)):bs)
 	 
 -- updating a specific agent with its incoming messages	by determining its plan and performing the corresponding actions
-agentUpdate :: (Agent,[Message]) -> (Agent,[Message])
-agentUpdate (agent,[])		= (agent',output) --trace ("AGENTUPDATE: " ++ show (idNr agent',output)) 
+agentUpdate :: HomeAutomationSystem -> (Agent,[Message]) -> (Agent,[Message])
+agentUpdate has (agent,[])		= (agent',output) --trace ("AGENTUPDATE: " ++ show (idNr agent',output)) 
 	where
-	 (agent',output)		= performActions agent $ getActions agent
-agentUpdate (agent,[m])		= (agent'',output) -- trace ("AGENTUPDATE: " ++ show (idNr agent'',output)) 
-	where
-	 Message prop a			= m
-	 beliefs'				= addBelief (beliefs agent) prop
-	 agent'					= agent{beliefs=beliefs'}
-	 (agent'',output)		= performActions agent' $ getActions agent'
-agentUpdate (agent,(m:msgs))= (agent'',output++output') -- trace ("AGENTUPDATE: " ++ show (idNr agent'',output++output')) 
+	 (agent',output)		= performActions has agent $ getActions agent
+agentUpdate has (agent,[m])		= (agent'',output) -- trace ("AGENTUPDATE: " ++ show (idNr agent'',output)) 
 	where
 	 Message prop a			= m
 	 beliefs'				= addBelief (beliefs agent) prop
 	 agent'					= agent{beliefs=beliefs'}
-	 (agentTemp,output)		= performActions agent' $ getActions agent'
+	 (agent'',output)		= performActions has agent' $ getActions agent'
+agentUpdate has (agent,(m:msgs))= (agent'',output++output') -- trace ("AGENTUPDATE: " ++ show (idNr agent'',output++output')) 
+	where
+	 Message prop a			= m
+	 beliefs'				= addBelief (beliefs agent) prop
+	 agent'					= agent{beliefs=beliefs'}
+	 (agentTemp,output)		= performActions has agent' $ getActions agent'
 	 Message p a2			= head msgs
-	 (agent'',output') 		= agentUpdate (agentTemp,msgs)		-- updates the agent in the next message
+	 (agent'',output') 		= agentUpdate has (agentTemp,msgs)		-- updates the agent in the next message
 
 --	 
-performActions :: Agent -> [Action] -> (Agent,[Message])
-performActions agent []									= (agent,[]) -- trace ("actions: " ++ show (idNr agent) ++ "  " ++ []) 
-performActions agent [TurnOn d]							= (agent',[]) -- trace ("actions: " ++ show (idNr agent) ++ "  " ++ show [TurnOn d])
+performActions :: HomeAutomationSystem -> Agent -> [Action] -> (Agent,[Message])
+performActions has agent []									= (agent,[]) -- trace ("actions: " ++ show (idNr agent) ++ "  " ++ []) 
+performActions has agent [TurnOn d]							= (agent',[]) -- trace ("actions: " ++ show (idNr agent) ++ "  " ++ show [TurnOn d])
 	where
 	 beliefs' 											= trace ("DEVICE TURNED ON!" ++ show d) addBelief (beliefs agent) (On d)
 	 agent' 											= agent{beliefs=beliefs'}
-performActions agent [TurnOff d]						= (agent',[]) -- trace ("actions: " ++ show (idNr agent) ++ "  " ++ show [TurnOn d])
+performActions has agent [TurnOff d]						= (agent',[]) -- trace ("actions: " ++ show (idNr agent) ++ "  " ++ show [TurnOn d])
 	where
 	 beliefs' 											= trace ("DEVICE TURNED OFF!" ++ show d) addBelief (beliefs agent) (Not (On d))
 	 agent' 											= agent{beliefs=beliefs'}
-performActions agent [Send recAgent]					| isJust $ fst $ retrieve OnLocationCond agent	= (agentl',[Message propl recAgent]) -- trace ("actions: " ++ show (idNr agent) ++ "  Send")
+performActions has agent [Send recAgent]					| isJust $ fst $ retrieve OnLocationCond agent	= (agentl',[Message propl recAgent]) -- trace ("actions: " ++ show (idNr agent) ++ "  Send")
 														| isJust $ fst $ retrieve InRangeCond agent		= (agentr',[Message propr recAgent])
 														| otherwise									= error "No information about proposition found!"
 	where
 	 (Just propl,agentl')	= retrieve OnLocationCond agent
 	 (Just propr,agentr')	= retrieve InRangeCond agent
-performActions agent [DetermineRange]					| inRange agent a 	= (agent'',[])		-- trace ("actions: " ++ show agent ++ "  " ++ show [DetermineRange]) Reevaluate plans
+performActions has agent [DetermineRange]					| inRange agent a 	= (agent'',[])		-- trace ("actions: " ++ show agent ++ "  " ++ show [DetermineRange]) Reevaluate plans
 														| otherwise			= (agent,[])
 	where
 	 (Just (OnLocation a1),agent')						= retrieve OnLocationCond agent
-	 a													= getAgent a1
+	 a													= getAgent has a1
 	 beliefs' 											= addBelief (beliefs agent') (InRange a1)
 	 agent''											= agent'{beliefs=beliefs'}
-performActions agent (act:acts)							= (agent'',output') -- trace ("actions: " ++ show (idNr agent) ++ "multiple")
+performActions has agent (act:acts)							= (agent'',output') -- trace ("actions: " ++ show (idNr agent) ++ "multiple")
 	where
-	 (agent',output)									= performActions agent [act]
-	 (agent'',output')									= performActions agent' acts
+	 (agent',output)									= performActions has agent [act]
+	 (agent'',output')									= performActions has agent' acts
 	 
 getActions :: Agent -> [Action]
 getActions agent = getActionsAux (plans agent) (beliefs agent)
@@ -181,8 +181,8 @@ addBelief (p:props) newProp | p == Not newProp || Not p == newProp	= newProp : (
 
 
 -- ORDER BEGIN							
-order :: [[Message]] -> [[Message]]
-order msgs	= map (getMessageList msgsGrouped) (agents has0)
+order :: HomeAutomationSystem -> [[Message]] -> [[Message]]
+order has msgs	= map (getMessageList has msgsGrouped) (agents has)
 	where
 	 msgsGrouped	= groupBy compareReceivers $ concat msgs
 	 
@@ -191,13 +191,13 @@ compareReceivers msg1 msg2	= agent1==agent2
 	 Message prop1 agent1 	= msg1
 	 Message prop2 agent2	= msg2
 	 
-getMessageList :: [[Message]] -> Agent -> [Message]
-getMessageList [] _							= []
-getMessageList (m:ms) agent | agent==agent'	= m
-							| otherwise		= getMessageList ms agent
+getMessageList :: HomeAutomationSystem -> [[Message]] -> Agent -> [Message]
+getMessageList _ [] _							= []
+getMessageList has (m:ms) agent | agent==agent'	= m
+							| otherwise		= getMessageList has ms agent
 	where
 	 Message prop agentString				= head m
-	 agent'									= getAgent agentString
+	 agent'									= getAgent has agentString
 -- ORDER END	 
 	 
 -- TODO: implement
@@ -207,8 +207,8 @@ inRange agent1 agent2			= (sqrt $ fromIntegral ((x1-x2)^2 + (y1-y2)^2)) < fromIn
 	 (x1,y1)					= location agent1
 	 (x2,y2)					= location agent2
 	 
-getAgent :: String -> Agent
-getAgent agentName = head [ agent | agent <- (agents has0), (idNr agent) == agentName ]
+getAgent :: HomeAutomationSystem -> String -> Agent
+getAgent has agentName = head [ agent | agent <- (agents has), (idNr agent) == agentName ]
 
 range :: Int
 range = 10
