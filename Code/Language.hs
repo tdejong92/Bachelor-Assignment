@@ -5,7 +5,8 @@ import Data.List
 
 -- Language
 data HomeAutomationSystem	= System {
-	agents		:: [Agent]
+	agents		:: [Agent],
+	devices		:: [Device]
 }
 	deriving Show
 
