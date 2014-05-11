@@ -9,11 +9,10 @@ data HomeAutomationSystem	= System {
 }
 	deriving Show
 
-data Proposition	=	OnLocation Agent Location
-					|	InRange Agent
+data Proposition	=	OnLocation String
+					|	InRange String
 					|	On Device
 					|	Counter Int
-					|	NewRound
 				--	|	And Proposition Proposition
 				--	|	Or Proposition Proposition
 				--	|	Implies Proposition Proposition
@@ -22,24 +21,25 @@ data Proposition	=	OnLocation Agent Location
 	
 data Condition		= OnLocationCond
 					| InRangeCond
-					| CounterCond [Int]
+					| CounterCond Int
 					| OnCond Device
-					| NewRoundCond
+					| NotC Condition
+					| Cond Proposition
 	deriving (Eq,Show,Read)
 	
 data Device	= Lamp | Heater | Radio
 	deriving (Eq,Show,Read)
 	
 data Action	= TurnOn Device
-			| Send Agent
+			| TurnOff Device
+			| Send String
 			| DetermineRange
-			| UpdateCounter
 	deriving (Eq,Show,Read)
 	
 data Plan	= Plan [Condition] [Action]	
 	deriving (Eq,Show,Read)
 				
-data Message	= Message Proposition Agent
+data Message	= Message Proposition String
 	deriving (Eq,Show,Read)
 				
 data Agent = Agent { 
@@ -47,8 +47,6 @@ data Agent = Agent {
 	plans		:: [Plan],
 	beliefs		:: [Proposition],
 	location	:: Location
-	--range		:: Int
-	--transport	:: Transport
 	}	
   deriving (Eq,Show,Read)
 	 
