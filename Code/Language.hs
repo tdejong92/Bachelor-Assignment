@@ -6,7 +6,7 @@ import Data.List
 -- Language
 data HomeAutomationSystem	= System {
 	agents		:: [Agent],
-	devices		:: [(Device,Bool)]
+	devices		:: [DeviceStatus]
 }
 	deriving Show
 
@@ -28,7 +28,12 @@ data Condition		= OnLocationCond
 					| Cond Proposition
 	deriving (Eq,Show,Read)
 	
-data Device	= Lamp | Heater | Radio
+data DeviceStatus	= DeviceStatus Device Bool
+	deriving (Show,Read)
+instance Eq DeviceStatus where
+	DeviceStatus d1 s1 == DeviceStatus d2 s2 = d1 == d2
+	
+data Device = Lamp | Heater | Radio	
 	deriving (Eq,Show,Read)
 	
 data Action	= TurnOn Device
@@ -49,7 +54,9 @@ data Agent = Agent {
 	beliefs		:: [Proposition],
 	location	:: Location
 	}	
-  deriving (Eq,Show,Read)
+  deriving (Show,Read)
+instance Eq Agent where
+	Agent idNr1 plans1 beliefs1 location1 == Agent idNr2 plans2 beliefs2 location2 = idNr1 == idNr2
 	 
 --type Transport	= Car | Bicycle | Foot
 

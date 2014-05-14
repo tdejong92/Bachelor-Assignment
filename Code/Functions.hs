@@ -10,6 +10,7 @@ import Data.Maybe
 -- TODO: check implementation of addBelief
 -- TODO: remove location from OnLocation
 -- TODO: add devices to system
+-- TODO: implement agentUpdate after retrieving has instead of agent
 
 msgs = [[],[],[],[],[]]
 
@@ -22,8 +23,8 @@ has1		= has0{agents=agents2}
 props		= [(Just 1,1),(Just 2,2),(Just 3,3)]
 
 
-run :: (HomeAutomationSystem -> [[Message]] -> (HomeAutomationSystem, [[Message]])) -> HomeAutomationSystem -> [[Message]] -> [[[Message]]]
-run world has input | any (==False) $ map null input 	= trace ("ROUND") input' : run world has' input'
+run :: (HomeAutomationSystem -> [[Message]] -> (HomeAutomationSystem, [[Message]])) -> HomeAutomationSystem -> [[Message]] -> [[DeviceStatus]]--[[[Message]]]
+run world has input | any (==False) $ map null input 	= trace ("ROUND") (devices has') : run world has' input'
 					| otherwise							= run world has' input' 
 	where
 	 (has',output)	= world has input
@@ -87,6 +88,10 @@ performActions has agent [TurnOn d]							= (agent',[]) -- trace ("actions: " ++
 	where
 	 beliefs' 											= trace ("DEVICE TURNED ON!" ++ show d) addBelief (beliefs agent) (On d)
 	 agent' 											= agent{beliefs=beliefs'}
+	 agents'											= update (agents has) agent'
+	 has'												= has {agents=agents'}
+	 devices'											= turn (devices has') d True
+	 has''												= update (devices has) (DeviceStatus d False)
 performActions has agent [TurnOff d]						= (agent',[]) -- trace ("actions: " ++ show (idNr agent) ++ "  " ++ show [TurnOn d])
 	where
 	 beliefs' 											= trace ("DEVICE TURNED OFF!" ++ show d) addBelief (beliefs agent) (Not (On d))
@@ -199,6 +204,11 @@ getMessageList has (m:ms) agent | agent==agent'	= m
 	 Message prop agentString				= head m
 	 agent'									= getAgent has agentString
 -- ORDER END	 
+
+update :: Eq a => [a] -> a -> [a]
+update (x:xs) y	| x==y		= (y:xs)
+				| otherwise	= (x:update xs y)
+
 	 
 -- TODO: implement
 inRange :: Agent -> Agent -> Bool
@@ -209,6 +219,14 @@ inRange agent1 agent2			= (sqrt $ fromIntegral ((x1-x2)^2 + (y1-y2)^2)) < fromIn
 	 
 getAgent :: HomeAutomationSystem -> String -> Agent
 getAgent has agentName = head [ agent | agent <- (agents has), (idNr agent) == agentName ]
+
+ 
+turn :: [DeviceStatus] -> Device -> Bool -> [DeviceStatus]
+turn (ds:dss) device b	| x == device	= db : dss
+						| otherwise		= ds : turn dss device b
+	where
+	 DeviceStatus x y	= ds
+	 db				= DeviceStatus x b
 
 range :: Int
 range = 10
